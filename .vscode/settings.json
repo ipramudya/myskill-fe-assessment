@@ -1,0 +1,9 @@
+{
+    "[typescript, javascript]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "files.associations": {
+        "globals.css": "tailwindcss"
+    }
+}
