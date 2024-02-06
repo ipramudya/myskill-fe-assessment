@@ -7,7 +7,6 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
 	title: "MySkill Assessment",
 	description: "A beautiful concept of assessment made with 😍 by MySkill",
-	
 }
 
 export default function RootLayout({

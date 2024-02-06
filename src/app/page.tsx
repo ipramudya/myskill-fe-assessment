@@ -1,10 +1,5 @@
+import { redirect } from "next/navigation"
 
-export default function Home() {
-	return (
-		<div className="bg-teal-50">
-			<h1>
-				hello world
-			</h1>
-		</div>
-	)
+export default function HomePage() {
+	return redirect("/portfolio")
 }
