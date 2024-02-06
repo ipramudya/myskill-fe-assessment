@@ -1,5 +1,19 @@
+import { cn } from "@/functions/cn"
 import { PropsWithChildren } from "react"
 
-export default function Container({ children }: PropsWithChildren) {
-	return <main className="mx-auto min-h-dvh w-full md:max-w-5xl">{children}</main>
+interface Props {
+	className?: string
+}
+
+export default function Container({
+	children,
+	className,
+}: PropsWithChildren<Props>) {
+	return (
+		<main
+			className={cn("mx-auto min-h-dvh w-full md:max-w-5xl", className)}
+		>
+			{children}
+		</main>
+	)
 }

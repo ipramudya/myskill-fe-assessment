@@ -5,6 +5,9 @@ interface Props {
 	className?: string
 }
 
-export default function Section({ children, className }: PropsWithChildren<Props>) {
+export default function Section({
+	children,
+	className,
+}: PropsWithChildren<Props>) {
 	return <section className={cn("my-4", className)}>{children}</section>
 }

@@ -6,7 +6,13 @@ interface Props {
 	description: string
 }
 
-export default function PortfolioItem({ name, position, company, date, description }: Props) {
+export default function PortfolioItem({
+	name,
+	position,
+	company,
+	date,
+	description,
+}: Props) {
 	return (
 		<article className="rounded-md border border-stroke bg-white px-4 pb-4 pt-2 shadow-sm transition-colors hover:border-gray hover:shadow">
 			<div className="flex flex-col space-y-3">
@@ -14,7 +20,11 @@ export default function PortfolioItem({ name, position, company, date, descripti
 					<h3 className="text-black-low">{name}</h3>
 					<p className="text-sm">
 						{company}{" "}
-						{position && <span className="text-xs text-gray">({position})</span>}
+						{position && (
+							<span className="text-xs text-gray">
+								({position})
+							</span>
+						)}
 					</p>
 				</div>
 
