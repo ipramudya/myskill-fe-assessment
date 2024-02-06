@@ -1,0 +1,5 @@
+echo "formatting files..."
+npm run format
+
+echo "\nrun linter..."
+npm run lint
