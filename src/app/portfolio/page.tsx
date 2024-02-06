@@ -63,7 +63,7 @@ export default function PortfolioPage() {
 					<div className="flex flex-col space-y-3">
 						<h2 className="text-lg">
 							Portofolio{" "}
-							<span className="text-gray text-sm font-normal">
+							<span className="text-sm font-normal text-gray">
 								(2 item)
 							</span>
 						</h2>

@@ -1,5 +1,8 @@
 echo "formatting files..."
 npm run format
 
+echo "\nre-adding posible files changed..."
+git add .
+
 echo "\nrun linter..."
 npm run lint
