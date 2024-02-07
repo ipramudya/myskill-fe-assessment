@@ -6,7 +6,7 @@ import { ErrorMessage, Input, Label, Textarea } from "@/components/Form"
 import Airdrop from "@/components/Form/Airdrop"
 import Icon from "@/components/Icon"
 import AddPortfolioForm from "@/components/Portfolio/AddPortfolioForm"
-import PortfolioSkeleton from "@/components/Portfolio/PortfolioSkeleton"
+import PortfolioFormSkeleton from "@/components/Portfolio/PortfolioFormSkeleton"
 import Section from "@/components/Section"
 import useIsMounted from "@/hooks/use-is-mounted"
 import useStorePortfolio from "@/hooks/use-store-portfolio"
@@ -77,7 +77,7 @@ export default function EditPortfolioPage() {
 	}
 
 	return !isMounted ? (
-		<PortfolioSkeleton />
+		<PortfolioFormSkeleton />
 	) : (
 		/* form provider is used to providing its children to access their 'form' variable context using useFormContext */
 		<FormProvider {...form}>

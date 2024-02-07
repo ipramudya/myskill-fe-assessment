@@ -1,7 +1,7 @@
 import Container from "../Container"
 import Section from "../Section"
 
-export default function PortfolioSkeleton() {
+export default function PortfolioFormSkeleton() {
 	return (
 		<Container>
 			<div className="flex flex-col p-3">

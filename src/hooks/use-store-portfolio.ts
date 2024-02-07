@@ -54,9 +54,10 @@ export default function useStorePortfolio() {
 	}, [stringifiedPortfolio])
 
 	const setPortfolio = async (
+		/* exclude profile & background type from StoredPortfolioData type */
 		payload: Omit<StoredPortfolioData, "profile" | "background"> & {
-			profile: File
-			background: File
+			profile: File // re-add back profile type as File
+			background: File // re-add back background type as File
 		},
 	) => {
 		const backgroundAsBase64Promise = fileToBase64String(payload.background)
@@ -68,7 +69,7 @@ export default function useStorePortfolio() {
 			profileAsBase64Promise,
 		])
 
-		const portfolioData = {
+		const portfolioData: StoredPortfolioData = {
 			...payload,
 			profile: {
 				base64Data: profileAsBase64,
@@ -80,7 +81,7 @@ export default function useStorePortfolio() {
 				fileName: payload.background.name,
 				mimeType: payload.background.type,
 			},
-		} satisfies StoredPortfolioData
+		}
 
 		setStringifiedPortfolio(JSON.stringify(portfolioData))
 	}
