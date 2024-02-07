@@ -10,8 +10,12 @@ export function formatBytes(bytes: number, decimals = 2) {
 }
 
 export function fileToBase64String(file: File): Promise<string> {
+	/* create new promise to compute given File into fileReader */
 	return new Promise<string>((resolve, reject) => {
+		/* create object, allow reading files asynchronously */
 		const reader = new FileReader()
+
+		/* whenever reading file successfully, it triggers onLoad method */
 		reader.onload = () => {
 			if (typeof reader.result === "string") {
 				resolve(reader.result.split(",")[1])
@@ -19,9 +23,14 @@ export function fileToBase64String(file: File): Promise<string> {
 				reject(new Error("Invalid reader result"))
 			}
 		}
+
+		/* if an error occour during reading file, throw it here */
 		reader.onerror = (error) => {
 			reject(error)
 		}
+		/** Initializing the reading of the file as a data URL (Base64-encoded string)
+		 *	by calling readAsDataURL on the FileReader object, passing the File object as a parameter.
+		 */
 		reader.readAsDataURL(file)
 	})
 }
