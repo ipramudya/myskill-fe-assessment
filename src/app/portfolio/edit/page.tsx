@@ -3,13 +3,14 @@
 import Button from "@/components/Button"
 import Container from "@/components/Container"
 import { ErrorMessage, Input, Label, Textarea } from "@/components/Form"
+import Airdrop from "@/components/Form/Airdrop"
 import Icon from "@/components/Icon"
 import { AddPortfolioForm } from "@/components/Portfolio"
 import Section from "@/components/Section"
 import { FormPayload, formSchema } from "@/utils/form-schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Link from "next/link"
-import { Fragment } from "react"
+import { useState } from "react"
 import {
 	FormProvider,
 	SubmitHandler,
@@ -26,6 +27,9 @@ const DEFAULT_VALUES: FormPayload = {
 }
 
 export default function EditPortfolioPage() {
+	const [backgroundImage, setBackgroundImage] = useState<File[] | null>(null)
+	const [profileImage, setProfileImage] = useState<File[] | null>(null)
+
 	const form = useForm<FormPayload>({
 		resolver: zodResolver(formSchema),
 		defaultValues: DEFAULT_VALUES,
@@ -37,7 +41,11 @@ export default function EditPortfolioPage() {
 	})
 
 	const handlePortfolioSubmit: SubmitHandler<FormPayload> = (fields) => {
-		console.log("FIELDS", fields)
+		console.log("FIELDS", {
+			...fields,
+			profile: profileImage?.[0],
+			background: backgroundImage?.[0],
+		})
 	}
 
 	const handleAddPortfolio = () => {
@@ -71,17 +79,18 @@ export default function EditPortfolioPage() {
 					</div>
 
 					<Section className="my-2 min-h-[169px] p-3" isForeground>
-						<h3>Background Image</h3>
+						<h3 className="mb-4">Background Image</h3>
+						<Airdrop onUploadChange={setBackgroundImage} />
 					</Section>
 
 					<Section className="my-2 min-h-[169px] p-3" isForeground>
-						<h3>Profile Image</h3>
+						<h3 className="mb-4">Profile Image</h3>
+						<Airdrop onUploadChange={setProfileImage} isProfile />
 					</Section>
 
 					<Section className="my-2 px-3 pb-4 pt-3" isForeground>
-						<h3>Profile</h3>
-
-						<div className="mt-4 flex flex-col space-y-4">
+						<h3 className="mb-4">Profile</h3>
+						<div className="flex flex-col space-y-4">
 							<div className="flex flex-col space-y-2">
 								<Label
 									htmlFor="name"
@@ -105,7 +114,6 @@ export default function EditPortfolioPage() {
 									</ErrorMessage>
 								)}
 							</div>
-
 							<div className="flex flex-col space-y-2">
 								<Label
 									htmlFor="possition"
@@ -132,7 +140,6 @@ export default function EditPortfolioPage() {
 									</ErrorMessage>
 								)}
 							</div>
-
 							<div className="flex flex-col space-y-2">
 								<Label
 									htmlFor="description"
@@ -164,7 +171,7 @@ export default function EditPortfolioPage() {
 
 					{form.watch("portfolio").length !== 0 ? (
 						/* if portfolio field exist or got appended, render this */
-						<Fragment>
+						<>
 							{form.watch("portfolio").map((_, idx) => (
 								/* iterate over apended portfolio fields to display its form */
 								<AddPortfolioForm
@@ -180,13 +187,13 @@ export default function EditPortfolioPage() {
 								Tambah portofolio
 							</Button>
 							<hr className="my-4 border-dashed border-stroke" />
-						</Fragment>
+						</>
 					) : (
 						/* otherwise, render empty field message */
 						<Section className="mb-4 mt-2 p-3" isForeground>
-							<h3>Portofolio</h3>
+							<h3 className="mb-4">Portofolio</h3>
 
-							<div className="mt-4 flex flex-col space-y-2">
+							<div className="flex flex-col space-y-2">
 								<p className="text-sm text-gray">
 									portofolio anda masih kosong, mohon penuhi
 									terlebih dahulu.
