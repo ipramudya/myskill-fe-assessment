@@ -24,6 +24,7 @@ import {
 	useFieldArray,
 	useForm,
 } from "react-hook-form"
+import toast from "react-hot-toast"
 
 /* all field must be provided by given defaultValues, otherwis it's gonna be throw an error */
 const DEFAULT_VALUES: FormPayload = {
@@ -60,7 +61,10 @@ export default function EditPortfolioPage() {
 	})
 
 	const handlePortfolioSubmit: SubmitHandler<FormPayload> = (fields) => {
-		if (!profileImage || !backgroundImage) return null
+		if (!profileImage || !backgroundImage) {
+			toast.error("Foto background dan/atau profile belum diunggah")
+			return
+		}
 
 		setPortfolio({
 			...fields,
