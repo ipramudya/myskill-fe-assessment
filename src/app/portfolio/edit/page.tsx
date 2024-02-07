@@ -7,10 +7,11 @@ import Airdrop from "@/components/Form/Airdrop"
 import Icon from "@/components/Icon"
 import { AddPortfolioForm } from "@/components/Portfolio"
 import Section from "@/components/Section"
+import useStorePortfolio from "@/hooks/use-store-portfolio"
 import { FormPayload, formSchema } from "@/utils/form-schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Link from "next/link"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {
 	FormProvider,
 	SubmitHandler,
@@ -29,11 +30,20 @@ const DEFAULT_VALUES: FormPayload = {
 export default function EditPortfolioPage() {
 	const [backgroundImage, setBackgroundImage] = useState<File[] | null>(null)
 	const [profileImage, setProfileImage] = useState<File[] | null>(null)
+	const { portfolio, setPortfolio } = useStorePortfolio()
 
 	const form = useForm<FormPayload>({
+		mode: "onBlur",
 		resolver: zodResolver(formSchema),
 		defaultValues: DEFAULT_VALUES,
-		mode: "onBlur",
+		values: portfolio
+			? {
+					name: portfolio.name,
+					possition: portfolio.possition,
+					description: portfolio.description,
+					portfolio: portfolio.portfolio,
+				}
+			: undefined,
 	})
 	const portfolioField = useFieldArray<FormPayload>({
 		control: form.control,
@@ -41,12 +51,18 @@ export default function EditPortfolioPage() {
 	})
 
 	const handlePortfolioSubmit: SubmitHandler<FormPayload> = (fields) => {
-		console.log("FIELDS", {
+		if (!profileImage || !backgroundImage) return null
+
+		setPortfolio({
 			...fields,
-			profile: profileImage?.[0],
-			background: backgroundImage?.[0],
+			profile: profileImage[0],
+			background: backgroundImage[0],
 		})
 	}
+
+	useEffect(() => {
+		console.log("PORTFOLIO", portfolio)
+	}, [portfolio])
 
 	const handleAddPortfolio = () => {
 		/* provide initial value once portfolio field appended */
@@ -80,12 +96,19 @@ export default function EditPortfolioPage() {
 
 					<Section className="my-2 min-h-[169px] p-3" isForeground>
 						<h3 className="mb-4">Background Image</h3>
-						<Airdrop onUploadChange={setBackgroundImage} />
+						<Airdrop
+							onUploadChange={setBackgroundImage}
+							defaultValue={portfolio?.background}
+						/>
 					</Section>
 
 					<Section className="my-2 min-h-[169px] p-3" isForeground>
 						<h3 className="mb-4">Profile Image</h3>
-						<Airdrop onUploadChange={setProfileImage} isProfile />
+						<Airdrop
+							onUploadChange={setProfileImage}
+							isProfile
+							defaultValue={portfolio?.profile}
+						/>
 					</Section>
 
 					<Section className="my-2 px-3 pb-4 pt-3" isForeground>

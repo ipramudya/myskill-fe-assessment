@@ -1,14 +1,22 @@
 import { cn } from "@/functions/cn"
 import { formatBytes } from "@/functions/file"
 import Image from "next/image"
-import { InputHTMLAttributes, useCallback, useMemo, useState } from "react"
+import {
+	InputHTMLAttributes,
+	useCallback,
+	useEffect,
+	useMemo,
+	useState,
+} from "react"
 import { useDropzone } from "react-dropzone"
 import Button from "../Button"
 import Icon from "../Icon"
 
-interface Props extends InputHTMLAttributes<HTMLInputElement> {
+interface Props
+	extends Omit<InputHTMLAttributes<HTMLInputElement>, "defaultValue"> {
 	onUploadChange: (files: File[] | null) => void
 	isProfile?: boolean
+	defaultValue?: File
 }
 
 export default function Airdrop({
@@ -56,6 +64,12 @@ export default function Airdrop({
 		setFiles(null)
 		onUploadChange(null)
 	}
+
+	useEffect(() => {
+		if (defaultValue) {
+			setFiles([defaultValue])
+		}
+	}, [defaultValue])
 
 	return (
 		<div

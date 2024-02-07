@@ -8,3 +8,47 @@ export function formatBytes(bytes: number, decimals = 2) {
 
 	return `${parseFloat((bytes / KB ** i).toFixed(dm))} ${sizes[i]}`
 }
+
+export function fileToBase64String(file: File): Promise<string> {
+	return new Promise<string>((resolve, reject) => {
+		const reader = new FileReader()
+		reader.onload = () => {
+			if (typeof reader.result === "string") {
+				resolve(reader.result.split(",")[1])
+			} else {
+				reject(new Error("Invalid reader result"))
+			}
+		}
+		reader.onerror = (error) => {
+			reject(error)
+		}
+		reader.readAsDataURL(file)
+	})
+}
+
+type Base64Metadata = {
+	filename: string
+	mimeType: string
+}
+export function base64StringToFile(
+	base64StringData: string,
+	{ filename, mimeType }: Base64Metadata,
+) {
+	const byteCharacters = atob(base64StringData)
+	const byteArrays: Uint8Array[] = []
+
+	/* iterate through byteChar from given base64StringData within atob function */
+	for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
+		const slice = byteCharacters.slice(offset, offset + 1024)
+		const byteNumbers = new Array(slice.length) // placeholder byte of numbers
+
+		for (let i = 0; i < slice.length; i++) {
+			byteNumbers[i] = slice.charCodeAt(i)
+		}
+
+		const byteArray = new Uint8Array(byteNumbers) // assign inner byteArray for each iterated byte of number
+		byteArrays.push(byteArray) // push into main byteOfNumbers
+	}
+
+	return new File(byteArrays, filename, { type: mimeType })
+}
