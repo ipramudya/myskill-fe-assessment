@@ -6,6 +6,7 @@ import EditPortfolioButton from "@/components/Portfolio/EditPortfolioButton"
 import PortfolioDetailSkeleton from "@/components/Portfolio/PortfolioDetailSkeleton"
 import PortfolioItem from "@/components/Portfolio/PortfolioItem"
 import Section from "@/components/Section"
+import { formatDate } from "@/functions/date"
 import useIsMounted from "@/hooks/use-is-mounted"
 import useStorePortfolio from "@/hooks/use-store-portfolio"
 import Image from "next/image"
@@ -104,7 +105,7 @@ export default function PortfolioPage() {
 									key={`portfolio-${idx}`}
 									name={p.name}
 									company={p.company}
-									date="Februari 2022 - Desember 2023"
+									date={formatDate(p.startDate, p.endDate)}
 									position={p.possition}
 									description={p.description}
 								/>

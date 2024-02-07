@@ -1,21 +1,19 @@
-import { format } from "date-fns"
+import { format, parseISO } from "date-fns"
 import { id } from "date-fns/locale"
 
-/** wrap given date and formatter itself
- * to return formatted date in bahasa as string
- */
-export default function formatDate(
-	date: string | Date,
-	formatter: string,
-): string {
-	if (!date) return ""
+export function formatDate(startDate: string, endDate: string) {
+	const start = parseISO(startDate)
+	const end = parseISO(endDate)
 
-	let d
-	if (typeof date === "string") {
-		d = new Date(date)
-	} else {
-		d = date
+	const isSameMonth = start.getMonth() === end.getMonth()
+
+	const withLocale = (d: Date) => {
+		return `${format(d, "MMMM yyyy", { locale: id })}`
 	}
 
-	return format(d, formatter, { locale: id })
+	if (isSameMonth) {
+		return withLocale(end)
+	}
+
+	return `${withLocale(start)}-${withLocale(end)}`
 }
