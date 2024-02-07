@@ -1,22 +1,16 @@
 import { cn } from "@/functions/cn"
 import { formatBytes } from "@/functions/file"
 import Image from "next/image"
-import {
-	InputHTMLAttributes,
-	useCallback,
-	useEffect,
-	useMemo,
-	useState,
-} from "react"
+import { InputHTMLAttributes, useCallback, useMemo, useState } from "react"
 import { useDropzone } from "react-dropzone"
 import Button from "../Button"
 import Icon from "../Icon"
 
 interface Props
 	extends Omit<InputHTMLAttributes<HTMLInputElement>, "defaultValue"> {
-	onUploadChange: (files: File[] | null) => void
+	onUploadChange: (files: File | null) => void
 	isProfile?: boolean
-	defaultValue?: File
+	defaultValue: File | null
 }
 
 export default function Airdrop({
@@ -25,13 +19,13 @@ export default function Airdrop({
 	isProfile = false,
 	...restProps
 }: Props) {
-	const [files, setFiles] = useState<File[] | null>(null)
+	const [file, setFile] = useState<File | null>(defaultValue)
 
 	/* to memoizing and reducee rerender, we need useCallback to pass onDrop fn into useDropzone as argument */
 	const onDrop = useCallback(
 		(files: File[]) => {
-			onUploadChange(files)
-			setFiles(files)
+			onUploadChange(files[0])
+			setFile(files[0])
 		},
 		[onUploadChange],
 	)
@@ -48,28 +42,21 @@ export default function Airdrop({
 	})
 
 	const processedFile = useMemo(() => {
-		if (files === null || files.length === 0) return null
+		if (file === null) return null
 
-		const image = files[0]
-		const imageURL = URL.createObjectURL(image)
+		const imageURL = URL.createObjectURL(file)
 
 		return {
-			name: image.name,
-			size: formatBytes(image.size),
+			name: file.name,
+			size: formatBytes(file.size),
 			url: imageURL,
 		}
-	}, [files])
+	}, [file])
 
 	const handleRemoveImage = () => {
-		setFiles(null)
+		setFile(null)
 		onUploadChange(null)
 	}
-
-	useEffect(() => {
-		if (defaultValue) {
-			setFiles([defaultValue])
-		}
-	}, [defaultValue])
 
 	return (
 		<div

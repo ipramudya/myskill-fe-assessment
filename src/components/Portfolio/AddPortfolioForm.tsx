@@ -1,3 +1,4 @@
+import useMinimizedPortfolioForm from "@/hooks/use-minimized-portfolio-form"
 import { FormPayload } from "@/utils/form-schema"
 import { FieldError, useFieldArray, useFormContext } from "react-hook-form"
 import Button from "../Button"
@@ -13,14 +14,33 @@ interface Props {
 }
 
 export default function AddPortfolioForm({ index }: Props) {
-	const { control, formState, register } = useFormContext<FormPayload>()
+	const { control, formState, trigger, register, watch } =
+		useFormContext<FormPayload>()
 	const portfolioField = useFieldArray<FormPayload>({
 		control,
 		name: "portfolio",
 	})
 
-	const handleDeletePortfolio = () => {
-		portfolioField.remove(index)
+	const { setMinimizedIndex } = useMinimizedPortfolioForm()
+
+	const checkEmptyField = (): boolean => {
+		const portfolioField = watch(`portfolio.${index}`)
+
+		let isEmpty = false
+		const keys = Object.keys(
+			portfolioField,
+		) as (keyof typeof portfolioField)[]
+
+		/* iterate over fields to check whether existing values are equal to emptystring */
+		let key: keyof typeof portfolioField
+		for (key of keys) {
+			if (portfolioField[key] === "") {
+				isEmpty = true
+				break
+			}
+		}
+
+		return isEmpty
 	}
 
 	/* get portfolio field error state by providing portfolio's key as argument  */
@@ -33,12 +53,28 @@ export default function AddPortfolioForm({ index }: Props) {
 		return formState.errors.portfolio?.[index]?.[key] || null
 	}
 
+	const handleDeletePortfolio = () => {
+		portfolioField.remove(index)
+		setMinimizedIndex(index)
+		trigger()
+	}
+
+	const handleMinimizeForm = () => {
+		setMinimizedIndex(index)
+	}
+
 	return (
 		<Section className="my-2 min-h-[169px] px-3 pb-4 pt-3" isForeground>
 			<div className="flex items-center justify-between">
-				<h3>Portofolio</h3>
+				<h3>Portofolio #{index + 1} </h3>
 				<div className="flex items-center space-x-2">
-					<Button size="sm" isIconButton className="bg-white">
+					<Button
+						size="sm"
+						isIconButton
+						className="bg-white"
+						disabled={Boolean(checkEmptyField())}
+						onClick={handleMinimizeForm}
+					>
 						<Icon.Maximize className="text-black-low md:h-5 md:w-5" />
 					</Button>
 					<Button

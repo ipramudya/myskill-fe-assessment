@@ -7,13 +7,16 @@ import Airdrop from "@/components/Form/Airdrop"
 import Icon from "@/components/Icon"
 import AddPortfolioForm from "@/components/Portfolio/AddPortfolioForm"
 import PortfolioFormSkeleton from "@/components/Portfolio/PortfolioFormSkeleton"
+import PortfolioItem from "@/components/Portfolio/PortfolioItem"
 import Section from "@/components/Section"
 import useIsMounted from "@/hooks/use-is-mounted"
+import useMinimizedPortfolioForm from "@/hooks/use-minimized-portfolio-form"
 import useStorePortfolio from "@/hooks/use-store-portfolio"
 import { FormPayload, formSchema } from "@/utils/form-schema"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { formatDate } from "date-fns"
 import Link from "next/link"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {
 	FormProvider,
 	SubmitHandler,
@@ -30,8 +33,9 @@ const DEFAULT_VALUES: FormPayload = {
 }
 
 export default function EditPortfolioPage() {
-	const [backgroundImage, setBackgroundImage] = useState<File[] | null>(null)
-	const [profileImage, setProfileImage] = useState<File[] | null>(null)
+	const [backgroundImage, setBackgroundImage] = useState<File | null>(null)
+	const [profileImage, setProfileImage] = useState<File | null>(null)
+	const { minimizedIndex, setMinimizedIndex } = useMinimizedPortfolioForm()
 
 	const { isMounted } = useIsMounted()
 	const { portfolio, setPortfolio } = useStorePortfolio()
@@ -59,8 +63,8 @@ export default function EditPortfolioPage() {
 
 		setPortfolio({
 			...fields,
-			profile: profileImage[0],
-			background: backgroundImage[0],
+			profile: profileImage,
+			background: backgroundImage,
 		})
 	}
 
@@ -75,6 +79,17 @@ export default function EditPortfolioPage() {
 			endDate: "",
 		})
 	}
+
+	const handleMinimizePortfolioItem = (index: number) => {
+		setMinimizedIndex(index)
+	}
+
+	useEffect(() => {
+		if (portfolio !== null) {
+			setBackgroundImage(portfolio.background)
+			setProfileImage(portfolio.profile)
+		}
+	}, [portfolio])
 
 	return !isMounted ? (
 		<PortfolioFormSkeleton />
@@ -100,7 +115,7 @@ export default function EditPortfolioPage() {
 						<h3 className="mb-4">Background Image</h3>
 						<Airdrop
 							onUploadChange={setBackgroundImage}
-							defaultValue={portfolio?.background}
+							defaultValue={backgroundImage}
 						/>
 					</Section>
 
@@ -109,7 +124,7 @@ export default function EditPortfolioPage() {
 						<Airdrop
 							onUploadChange={setProfileImage}
 							isProfile
-							defaultValue={portfolio?.profile}
+							defaultValue={profileImage}
 						/>
 					</Section>
 
@@ -197,13 +212,39 @@ export default function EditPortfolioPage() {
 					{form.watch("portfolio").length !== 0 ? (
 						/* if portfolio field exist or got appended, render this */
 						<>
-							{form.watch("portfolio").map((_, idx) => (
-								/* iterate over apended portfolio fields to display its form */
-								<AddPortfolioForm
-									key={`portfolio-${idx}`}
-									index={idx}
-								/>
-							))}
+							{form.watch("portfolio").map((p, idx) =>
+								minimizedIndex !== null &&
+								minimizedIndex.includes(idx) ? (
+									<PortfolioItem
+										key={`portfolio-${idx}`}
+										className="my-2"
+										name={p.name}
+										company={p.company}
+										position={p.possition}
+										description={p.description}
+										date={formatDate(
+											p.startDate,
+											p.endDate,
+										)}
+									>
+										<Button
+											size="sm"
+											isIconButton
+											className="bg-white"
+											onClick={() =>
+												handleMinimizePortfolioItem(idx)
+											}
+										>
+											<Icon.Maximize className="text-black-low md:h-5 md:w-5" />
+										</Button>
+									</PortfolioItem>
+								) : (
+									<AddPortfolioForm
+										key={`portfolio-${idx}`}
+										index={idx}
+									/>
+								),
+							)}
 							<Button
 								className="mt-2 border border-primary bg-white text-primary hover:bg-primary/10"
 								onClick={handleAddPortfolio}
