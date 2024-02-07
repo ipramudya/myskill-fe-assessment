@@ -18,7 +18,7 @@ type ColorSchemeTypes = {
 	[key in ColorScheme]: string
 }
 const REMAP_COLORSCHEME_STYLE: ColorSchemeTypes = {
-	default: "bg-gray text-white",
+	default: "bg-stroke text-gray",
 	danger: "bg-danger text-white",
 	primary: "bg-primary text-white",
 	warning: "bg-warning text-white",

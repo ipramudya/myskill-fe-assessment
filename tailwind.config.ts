@@ -11,7 +11,7 @@ const config: Config = {
 		colors: {
 			transparent: colors.transparent,
 			white: colors.white,
-			primary: "#4fc4cf",
+			primary: "#09898C",
 			foreground: "#f6f6f6",
 			danger: "#ef4565",
 			warning: "#f9bc60",

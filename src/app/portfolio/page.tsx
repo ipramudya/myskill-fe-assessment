@@ -1,8 +1,6 @@
 import { Hero, Profile } from "@/assets/images"
-import Button from "@/components/Button"
 import Container from "@/components/Container"
-import Icon from "@/components/Icon"
-import PortfolioItem from "@/components/PortfolioItem"
+import { EditPortfolioButton, PortfolioItem } from "@/components/Portfolio"
 import Section from "@/components/Section"
 import Image from "next/image"
 
@@ -22,7 +20,7 @@ export default function PortfolioPage() {
 
 					{/* profile picture */}
 					<div className="absolute bottom-0 left-4 z-10 w-fit translate-y-1/2">
-						<div className="aspect-square w-[82px] overflow-hidden rounded-full bg-white p-1 md:w-[96px]">
+						<div className="aspect-square w-[82px] overflow-hidden rounded-full bg-white p-1">
 							<Image
 								src={Profile}
 								alt="profile"
@@ -52,10 +50,7 @@ export default function PortfolioPage() {
 						</div>
 
 						{/* edit portfolio action */}
-						<Button size="sm" colorScheme="warning">
-							<Icon.Edit className="mr-2 hidden text-white md:block" />
-							Perbarui
-						</Button>
+						<EditPortfolioButton />
 					</div>
 				</Section>
 

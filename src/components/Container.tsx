@@ -11,7 +11,10 @@ export default function Container({
 }: PropsWithChildren<Props>) {
 	return (
 		<main
-			className={cn("mx-auto min-h-dvh w-full md:max-w-5xl", className)}
+			className={cn(
+				"mx-auto min-h-dvh w-full max-w-xl md:max-w-3xl",
+				className,
+			)}
 		>
 			{children}
 		</main>
