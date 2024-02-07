@@ -1,6 +1,7 @@
 import { Hero, Profile } from "@/assets/images"
 import Container from "@/components/Container"
-import { EditPortfolioButton, PortfolioItem } from "@/components/Portfolio"
+import EditPortfolioButton from "@/components/Portfolio/EditPortfolioButton"
+import PortfolioItem from "@/components/Portfolio/PortfolioItem"
 import Section from "@/components/Section"
 import Image from "next/image"
 

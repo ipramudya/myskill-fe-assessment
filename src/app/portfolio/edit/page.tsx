@@ -5,13 +5,15 @@ import Container from "@/components/Container"
 import { ErrorMessage, Input, Label, Textarea } from "@/components/Form"
 import Airdrop from "@/components/Form/Airdrop"
 import Icon from "@/components/Icon"
-import { AddPortfolioForm } from "@/components/Portfolio"
+import AddPortfolioForm from "@/components/Portfolio/AddPortfolioForm"
+import PortfolioSkeleton from "@/components/Portfolio/PortfolioSkeleton"
 import Section from "@/components/Section"
+import useIsMounted from "@/hooks/use-is-mounted"
 import useStorePortfolio from "@/hooks/use-store-portfolio"
 import { FormPayload, formSchema } from "@/utils/form-schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Link from "next/link"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import {
 	FormProvider,
 	SubmitHandler,
@@ -30,6 +32,8 @@ const DEFAULT_VALUES: FormPayload = {
 export default function EditPortfolioPage() {
 	const [backgroundImage, setBackgroundImage] = useState<File[] | null>(null)
 	const [profileImage, setProfileImage] = useState<File[] | null>(null)
+
+	const { isMounted } = useIsMounted()
 	const { portfolio, setPortfolio } = useStorePortfolio()
 
 	const form = useForm<FormPayload>({
@@ -60,10 +64,6 @@ export default function EditPortfolioPage() {
 		})
 	}
 
-	useEffect(() => {
-		console.log("PORTFOLIO", portfolio)
-	}, [portfolio])
-
 	const handleAddPortfolio = () => {
 		/* provide initial value once portfolio field appended */
 		portfolioField.append({
@@ -76,7 +76,9 @@ export default function EditPortfolioPage() {
 		})
 	}
 
-	return (
+	return !isMounted ? (
+		<PortfolioSkeleton />
+	) : (
 		/* form provider is used to providing its children to access their 'form' variable context using useFormContext */
 		<FormProvider {...form}>
 			<Container>

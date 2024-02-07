@@ -73,7 +73,10 @@ export default function Airdrop({
 
 	return (
 		<div
-			className="flex min-h-[100px] items-center justify-center rounded-md border border-dashed border-stroke bg-white p-4"
+			className={cn(
+				"flex min-h-[100px] items-center justify-center rounded-md border border-stroke bg-white p-4",
+				processedFile ? "border-solid shadow-sm" : "border-dashed",
+			)}
 			{...(processedFile ? {} : getRootProps())}
 		>
 			<div className="flex flex-col items-center space-y-3 text-center">
@@ -90,7 +93,7 @@ export default function Airdrop({
 									: "aspect-[4/1] w-full rounded-md",
 							)}
 						/>
-						<div className="flex flex-col space-y-1 ">
+						<div className="flex flex-col space-y-1">
 							<p className="text-xs text-gray">
 								{processedFile.name}
 							</p>
@@ -120,7 +123,7 @@ export default function Airdrop({
 								browse
 							</span>
 						</p>
-						<div className="flex flex-col space-y-1 ">
+						<div className="flex flex-col space-y-1">
 							<p className="text-xs text-gray">
 								Support files: png, jpg, jpeg
 							</p>
