@@ -74,6 +74,11 @@ export default function EditPortfolioPage() {
 	}
 
 	const handleAddPortfolio = () => {
+		if (form.watch("portfolio").length >= 10) {
+			toast.error("Portofolio tidak dapat lebih dari 10 buah")
+			return
+		}
+
 		/* provide initial value once portfolio field appended */
 		portfolioField.append({
 			id: nanoid(),

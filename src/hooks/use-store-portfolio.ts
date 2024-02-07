@@ -16,7 +16,7 @@ type StoredPortfolioData = {
 } & FormPayload
 
 /* initialize session storage as JSON string */
-const storage = createJSONStorage<string>(() => sessionStorage)
+const storage = createJSONStorage<string>(() => localStorage)
 
 /* initialize shared atom state which contain stringified JSON, stored into session storage */
 const SessionStoragePortfolioAtom = atomWithStorage<string>(
