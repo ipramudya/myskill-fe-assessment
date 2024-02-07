@@ -17,7 +17,7 @@ export default function EditPortfolioButton() {
 			onClick={() => router.push("/portfolio/edit")}
 		>
 			<Icon.Edit className="mr-2 hidden text-white md:block" />
-			{portfolio ? "Tambahkan" : "Perbarui"}
+			{portfolio ? "Perbarui" : "Tambahkan"}
 		</Button>
 	)
 }
