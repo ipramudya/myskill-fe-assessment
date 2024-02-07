@@ -5,6 +5,7 @@ const REQUIRED_ERROR = "*tidak boleh kosong"
 
 export const portfolioFormSchema = z
 	.object({
+		id: z.string().min(1, REQUIRED_ERROR),
 		name: z.string().min(1, REQUIRED_ERROR),
 		possition: z.string().min(1, REQUIRED_ERROR),
 		company: z.string().min(1, REQUIRED_ERROR),

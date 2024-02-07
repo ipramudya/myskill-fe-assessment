@@ -15,6 +15,7 @@ import useStorePortfolio from "@/hooks/use-store-portfolio"
 import { FormPayload, formSchema } from "@/utils/form-schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { formatDate } from "date-fns"
+import { nanoid } from "nanoid"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import {
@@ -71,6 +72,7 @@ export default function EditPortfolioPage() {
 	const handleAddPortfolio = () => {
 		/* provide initial value once portfolio field appended */
 		portfolioField.append({
+			id: nanoid(),
 			name: "",
 			company: "",
 			description: "",
@@ -80,8 +82,8 @@ export default function EditPortfolioPage() {
 		})
 	}
 
-	const handleMinimizePortfolioItem = (index: number) => {
-		setMinimizedIndex(index)
+	const handleMinimizePortfolioItem = (id: string) => {
+		setMinimizedIndex(id)
 	}
 
 	useEffect(() => {
@@ -214,9 +216,9 @@ export default function EditPortfolioPage() {
 						<>
 							{form.watch("portfolio").map((p, idx) =>
 								minimizedIndex !== null &&
-								minimizedIndex.includes(idx) ? (
+								minimizedIndex.includes(p.id) ? (
 									<PortfolioItem
-										key={`portfolio-${idx}`}
+										key={p.id}
 										className="my-2"
 										name={p.name}
 										company={p.company}
@@ -232,7 +234,9 @@ export default function EditPortfolioPage() {
 											isIconButton
 											className="bg-white"
 											onClick={() =>
-												handleMinimizePortfolioItem(idx)
+												handleMinimizePortfolioItem(
+													p.id,
+												)
 											}
 										>
 											<Icon.Maximize className="text-black-low md:h-5 md:w-5" />
@@ -240,7 +244,8 @@ export default function EditPortfolioPage() {
 									</PortfolioItem>
 								) : (
 									<AddPortfolioForm
-										key={`portfolio-${idx}`}
+										key={p.id}
+										id={p.id}
 										index={idx}
 									/>
 								),

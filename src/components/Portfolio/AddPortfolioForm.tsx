@@ -9,11 +9,15 @@ import Section from "../Section"
 type PortfolioPayloadKeys = keyof FormPayload["portfolio"][number]
 
 interface Props {
-	/* beacause this component is dynamic, we need to provide index from iteration as key identifier */
+	/** beacause this component is dynamic, we need to provide index from iteration
+	 * as identifier to add/remove this portfolio from fieldArray
+	 */
 	index: number
+	/* ID is used to indicate whether current form is minimized or not, by storing it into minimized-array */
+	id: string
 }
 
-export default function AddPortfolioForm({ index }: Props) {
+export default function AddPortfolioForm({ index, id }: Props) {
 	const { control, formState, trigger, register, watch } =
 		useFormContext<FormPayload>()
 	const portfolioField = useFieldArray<FormPayload>({
@@ -55,12 +59,12 @@ export default function AddPortfolioForm({ index }: Props) {
 
 	const handleDeletePortfolio = () => {
 		portfolioField.remove(index)
-		setMinimizedIndex(index)
+		setMinimizedIndex(id)
 		trigger()
 	}
 
 	const handleMinimizeForm = () => {
-		setMinimizedIndex(index)
+		setMinimizedIndex(id)
 	}
 
 	return (
