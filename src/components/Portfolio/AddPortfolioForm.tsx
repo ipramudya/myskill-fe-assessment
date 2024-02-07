@@ -1,15 +1,36 @@
-import usePortfolioCount from "@/hooks/use-portfolio-count"
+import { FormPayload } from "@/utils/form-schema"
+import { FieldError, useFieldArray, useFormContext } from "react-hook-form"
 import Button from "../Button"
-import { Input, Label, Textarea } from "../Form"
+import { ErrorMessage, Input, Label, Textarea } from "../Form"
 import Icon from "../Icon"
 import Section from "../Section"
 
-export default function AddPortfolioForm() {
-	const { decPortfolioCount } = usePortfolioCount()
+type PortfolioPayloadKeys = keyof FormPayload["portfolio"][number]
 
-	const onDecreasePortfolioCount = () => {
-		console.log("shud run")
-		decPortfolioCount()
+interface Props {
+	/* beacause this component is dynamic, we need to provide index from iteration as key identifier */
+	index: number
+}
+
+export default function AddPortfolioForm({ index }: Props) {
+	const { control, formState, register } = useFormContext<FormPayload>()
+	const portfolioField = useFieldArray<FormPayload>({
+		control,
+		name: "portfolio",
+	})
+
+	const handleDeletePortfolio = () => {
+		portfolioField.remove(index)
+	}
+
+	/* get portfolio field error state by providing portfolio's key as argument  */
+	const getPortfolioError = (
+		key: PortfolioPayloadKeys,
+	): FieldError | null => {
+		/** check whether portfolio fields already registered on the formState context, also the index should match.
+		 *	if not, return null, otherwise return that state
+		 */
+		return formState.errors.portfolio?.[index]?.[key] || null
 	}
 
 	return (
@@ -18,58 +39,139 @@ export default function AddPortfolioForm() {
 				<h3>Portofolio</h3>
 				<div className="flex items-center space-x-2">
 					<Button size="sm" isIconButton className="bg-white">
-						<Icon.Maximize className="h-5 w-5 text-black-low" />
+						<Icon.Maximize className="text-black-low md:h-5 md:w-5" />
 					</Button>
 					<Button
 						size="sm"
 						isIconButton
 						colorScheme="danger"
-						onClick={onDecreasePortfolioCount}
+						onClick={handleDeletePortfolio}
 					>
-						<Icon.Delete className="h-5 w-5" />
+						<Icon.Delete className="md:h-5 md:w-5" />
 					</Button>
 				</div>
 			</div>
 
 			<div className="mt-4 flex flex-col space-y-4">
 				<div className="flex flex-col space-y-2">
-					<Label htmlFor="name">Nama</Label>
-					<Input id="name" placeholder="masukan nama portofolio..." />
+					<Label
+						htmlFor="portfolio-name"
+						isError={Boolean(getPortfolioError("name"))}
+					>
+						Nama
+					</Label>
+					<Input
+						id="portfolio-name"
+						placeholder="masukan nama portofolio..."
+						isError={Boolean(getPortfolioError("name"))}
+						{...register(`portfolio.${index}.name`)}
+					/>
+					{Boolean(getPortfolioError("name")) && (
+						<ErrorMessage>
+							{getPortfolioError("name")?.message}
+						</ErrorMessage>
+					)}
 				</div>
 
 				<div className="flex flex-col space-y-2">
-					<Label htmlFor="possition">Posisi</Label>
+					<Label
+						htmlFor="portfolio-possition"
+						isError={Boolean(getPortfolioError("possition"))}
+					>
+						Posisi
+					</Label>
 					<Input
-						id="possition"
+						id="portfolio-possition"
 						placeholder="masukan posisi/jabatan..."
+						isError={Boolean(getPortfolioError("possition"))}
+						{...register(`portfolio.${index}.possition`)}
 					/>
+					{Boolean(getPortfolioError("possition")) && (
+						<ErrorMessage>
+							{getPortfolioError("possition")?.message}
+						</ErrorMessage>
+					)}
 				</div>
 
 				<div className="flex flex-col space-y-2">
-					<Label htmlFor="company">Perusahaan</Label>
+					<Label
+						htmlFor="portfolio-company"
+						isError={Boolean(getPortfolioError("company"))}
+					>
+						Perusahaan
+					</Label>
 					<Input
-						id="company"
+						id="portfolio-company"
 						placeholder="masukan nama perusahaan..."
+						isError={Boolean(getPortfolioError("company"))}
+						{...register(`portfolio.${index}.company`)}
 					/>
+					{Boolean(getPortfolioError("company")) && (
+						<ErrorMessage>
+							{getPortfolioError("company")?.message}
+						</ErrorMessage>
+					)}
 				</div>
 
 				<div className="grid grid-cols-2 gap-2">
 					<div className="flex flex-col space-y-2">
-						<Label htmlFor="startDate">Tanggal Mulai</Label>
-						<Input id="startDate" type="date" />
+						<Label
+							htmlFor="portfolio-startDate"
+							isError={Boolean(getPortfolioError("startDate"))}
+						>
+							Tanggal Mulai
+						</Label>
+						<Input
+							id="portfolio-startDate"
+							type="date"
+							isError={Boolean(getPortfolioError("startDate"))}
+							{...register(`portfolio.${index}.startDate`)}
+						/>
+						{Boolean(getPortfolioError("startDate")) && (
+							<ErrorMessage>
+								{getPortfolioError("startDate")?.message}
+							</ErrorMessage>
+						)}
 					</div>
 					<div className="flex flex-col space-y-2">
-						<Label htmlFor="endDate">Tanggal Berakhir</Label>
-						<Input id="endDate" type="date" />
+						<Label
+							htmlFor="portfolio-endDate"
+							isError={Boolean(getPortfolioError("endDate"))}
+						>
+							Tanggal Berakhir
+						</Label>
+						<Input
+							id="portfolio-endDate"
+							type="date"
+							isError={Boolean(getPortfolioError("endDate"))}
+							{...register(`portfolio.${index}.endDate`)}
+						/>
+						{Boolean(getPortfolioError("endDate")) && (
+							<ErrorMessage>
+								{getPortfolioError("endDate")?.message}
+							</ErrorMessage>
+						)}
 					</div>
 				</div>
 
 				<div className="flex flex-col space-y-2">
-					<Label htmlFor="description">Deskripsi</Label>
+					<Label
+						htmlFor="portfolio-description"
+						isError={Boolean(getPortfolioError("description"))}
+					>
+						Deskripsi
+					</Label>
 					<Textarea
-						id="description"
+						id="portfolio-description"
 						placeholder="masukan deskripsi..."
+						isError={Boolean(getPortfolioError("description"))}
+						{...register(`portfolio.${index}.description`)}
 					/>
+					{Boolean(getPortfolioError("description")) && (
+						<ErrorMessage>
+							{getPortfolioError("description")?.message}
+						</ErrorMessage>
+					)}
 				</div>
 			</div>
 		</Section>
