@@ -15,10 +15,10 @@ type StoredPortfolioData = {
 	background: CustomFile
 } & FormPayload
 
-/* initialize session storage as JSON string */
+/* initialize local storage, used later to store stringified JSON StoredPortfolioData */
 const storage = createJSONStorage<string>(() => localStorage)
 
-/* initialize shared atom state which contain stringified JSON, stored into session storage */
+/* initialize shared atom state which contain stringified JSON, stored into local storage */
 const SessionStoragePortfolioAtom = atomWithStorage<string>(
 	"portfolio",
 	"",
@@ -42,10 +42,12 @@ export default function useStorePortfolio() {
 
 		return {
 			...parsedPortfolio,
+			/* every read, transform background which stored as base64 string into object File */
 			background: base64StringToFile(background.base64Data, {
 				filename: background.fileName,
 				mimeType: background.mimeType,
 			}),
+			/* as well as profile, transform it into object File */
 			profile: base64StringToFile(profile.base64Data, {
 				filename: profile.fileName,
 				mimeType: profile.mimeType,
@@ -60,6 +62,9 @@ export default function useStorePortfolio() {
 			background: File // re-add back background type as File
 		},
 	) => {
+		/** before storing background & profile file, transform it into Base64 string.
+		 * 	Each of these two processes returns promise.
+		 */
 		const backgroundAsBase64Promise = fileToBase64String(payload.background)
 		const profileAsBase64Promise = fileToBase64String(payload.profile)
 
@@ -69,6 +74,7 @@ export default function useStorePortfolio() {
 			profileAsBase64Promise,
 		])
 
+		/* we need to store all payload, transformed file base64 string, filename, and mimetype of those files */
 		const portfolioData: StoredPortfolioData = {
 			...payload,
 			profile: {

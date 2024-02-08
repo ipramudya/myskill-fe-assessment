@@ -47,6 +47,10 @@ Mekanisme penyimpanan data dilakukan dengan cara mengubah `object` data menjadi 
 
 Proses `stringify-parse` dipilih karena skema data yang disusun terbilang kompleks, sebagai contoh transformasi `blob` File image menuju `base64 string` yang disimpan berbentuk objek. Implementasi ini dapat dikunjungi pada [bagian ini](https://github.com/ipramudya/myskill-fe-assessment/blob/main/src/hooks/use-store-portfolio.ts).
 
+### Skema penyimpanan file
+
+Untuk menyimpan file ke dalam browser storage, file terunggah ditransformasi ke bentuk `base64 string` disertai dengan `filename` dan `mimetype-nya`. Ketiga informasi tersebut digunakan untuk mentransformasi `base64 string` ke bentuk object File tanpa meninggalkan perubahan data sedikitpun. Proses transformasi file secara asinkron menggunakan API `FileReader` bawaan [browser](https://developer.mozilla.org/en-US/docs/Web/API/FileReader). Sedangkan proses transformasi kembali menuju object File menggunakan API `atob`, dengan merubah menjadi bytes character. Implementasi tersebut dapat dilihat pada [bagian ini](https://github.com/ipramudya/myskill-fe-assessment/blob/main/src/functions/file.ts).
+
 ### Library yang Digunakan
 
 -   Style system - menggunakan [tailwindcss](https://tailwindcss.com/), diimplementasikan untuk membangun abstraksi reusable & type-safe [component](https://github.com/ipramudya/myskill-fe-assessment/blob/main/src/components/Button.tsx) dengan lebih cepat.
