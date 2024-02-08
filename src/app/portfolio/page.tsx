@@ -70,17 +70,14 @@ export default function PortfolioPage() {
 						<div className="flex flex-col space-y-3">
 							<div className="flex flex-col">
 								<h1 className="text-lg">
-									{portfolio?.name ||
-										"Nama anda belum diatur"}
+									{portfolio?.name || "Nama anda belum diatur"}
 								</h1>
 								<h3 className="text-base font-normal text-black-low">
-									{portfolio?.possition ||
-										"Jabatan belum diatur"}
+									{portfolio?.possition || "Jabatan belum diatur"}
 								</h3>
 							</div>
 							<p className="text-sm md:max-w-[60%]">
-								{portfolio?.description ||
-									"Deskripsi belum diatur"}
+								{portfolio?.description || "Deskripsi belum diatur"}
 							</p>
 						</div>
 
@@ -112,9 +109,7 @@ export default function PortfolioPage() {
 							))
 						) : (
 							<div className="min-h-[148px] rounded-md border border-dashed border-stroke px-4 pb-4 pt-2">
-								<p className="text-sm text-gray">
-									Portofolio anda masih kosong
-								</p>
+								<p className="text-sm text-gray">Portofolio anda masih kosong</p>
 							</div>
 						)}
 					</div>

@@ -18,8 +18,7 @@ interface Props {
 }
 
 export default function AddPortfolioForm({ index, id }: Props) {
-	const { control, formState, trigger, register, watch } =
-		useFormContext<FormPayload>()
+	const { control, formState, trigger, register, watch } = useFormContext<FormPayload>()
 	const portfolioField = useFieldArray<FormPayload>({
 		control,
 		name: "portfolio",
@@ -31,9 +30,7 @@ export default function AddPortfolioForm({ index, id }: Props) {
 		const portfolioField = watch(`portfolio.${index}`)
 
 		let isEmpty = false
-		const keys = Object.keys(
-			portfolioField,
-		) as (keyof typeof portfolioField)[]
+		const keys = Object.keys(portfolioField) as (keyof typeof portfolioField)[]
 
 		/* iterate over fields to check whether existing values are equal to emptystring */
 		let key: keyof typeof portfolioField
@@ -48,9 +45,7 @@ export default function AddPortfolioForm({ index, id }: Props) {
 	}
 
 	/* get portfolio field error state by providing portfolio's key as argument  */
-	const getPortfolioError = (
-		key: PortfolioPayloadKeys,
-	): FieldError | null => {
+	const getPortfolioError = (key: PortfolioPayloadKeys): FieldError | null => {
 		/** check whether portfolio fields already registered on the formState context, also the index should match.
 		 *	if not, return null, otherwise return that state
 		 */
@@ -94,10 +89,7 @@ export default function AddPortfolioForm({ index, id }: Props) {
 
 			<div className="mt-4 flex flex-col space-y-4">
 				<div className="flex flex-col space-y-2">
-					<Label
-						htmlFor="portfolio-name"
-						isError={Boolean(getPortfolioError("name"))}
-					>
+					<Label htmlFor="portfolio-name" isError={Boolean(getPortfolioError("name"))}>
 						Nama
 					</Label>
 					<Input
@@ -107,9 +99,7 @@ export default function AddPortfolioForm({ index, id }: Props) {
 						{...register(`portfolio.${index}.name`)}
 					/>
 					{Boolean(getPortfolioError("name")) && (
-						<ErrorMessage>
-							{getPortfolioError("name")?.message}
-						</ErrorMessage>
+						<ErrorMessage>{getPortfolioError("name")?.message}</ErrorMessage>
 					)}
 				</div>
 
@@ -127,9 +117,7 @@ export default function AddPortfolioForm({ index, id }: Props) {
 						{...register(`portfolio.${index}.possition`)}
 					/>
 					{Boolean(getPortfolioError("possition")) && (
-						<ErrorMessage>
-							{getPortfolioError("possition")?.message}
-						</ErrorMessage>
+						<ErrorMessage>{getPortfolioError("possition")?.message}</ErrorMessage>
 					)}
 				</div>
 
@@ -147,9 +135,7 @@ export default function AddPortfolioForm({ index, id }: Props) {
 						{...register(`portfolio.${index}.company`)}
 					/>
 					{Boolean(getPortfolioError("company")) && (
-						<ErrorMessage>
-							{getPortfolioError("company")?.message}
-						</ErrorMessage>
+						<ErrorMessage>{getPortfolioError("company")?.message}</ErrorMessage>
 					)}
 				</div>
 
@@ -168,9 +154,7 @@ export default function AddPortfolioForm({ index, id }: Props) {
 							{...register(`portfolio.${index}.startDate`)}
 						/>
 						{Boolean(getPortfolioError("startDate")) && (
-							<ErrorMessage>
-								{getPortfolioError("startDate")?.message}
-							</ErrorMessage>
+							<ErrorMessage>{getPortfolioError("startDate")?.message}</ErrorMessage>
 						)}
 					</div>
 					<div className="flex flex-col space-y-2">
@@ -187,9 +171,7 @@ export default function AddPortfolioForm({ index, id }: Props) {
 							{...register(`portfolio.${index}.endDate`)}
 						/>
 						{Boolean(getPortfolioError("endDate")) && (
-							<ErrorMessage>
-								{getPortfolioError("endDate")?.message}
-							</ErrorMessage>
+							<ErrorMessage>{getPortfolioError("endDate")?.message}</ErrorMessage>
 						)}
 					</div>
 				</div>
@@ -208,9 +190,7 @@ export default function AddPortfolioForm({ index, id }: Props) {
 						{...register(`portfolio.${index}.description`)}
 					/>
 					{Boolean(getPortfolioError("description")) && (
-						<ErrorMessage>
-							{getPortfolioError("description")?.message}
-						</ErrorMessage>
+						<ErrorMessage>{getPortfolioError("description")?.message}</ErrorMessage>
 					)}
 				</div>
 			</div>

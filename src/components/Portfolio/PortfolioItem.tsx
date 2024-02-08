@@ -32,11 +32,7 @@ export default function PortfolioItem({
 						<h3 className="text-black-low">{name}</h3>
 						<p className="text-sm">
 							{company}{" "}
-							{position && (
-								<span className="text-xs text-gray">
-									({position})
-								</span>
-							)}
+							{position && <span className="text-xs text-gray">({position})</span>}
 						</p>
 					</div>
 

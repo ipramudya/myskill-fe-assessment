@@ -6,8 +6,7 @@ import { useDropzone } from "react-dropzone"
 import Button from "../Button"
 import Icon from "../Icon"
 
-interface Props
-	extends Omit<InputHTMLAttributes<HTMLInputElement>, "defaultValue"> {
+interface Props extends Omit<InputHTMLAttributes<HTMLInputElement>, "defaultValue"> {
 	onUploadChange: (files: File | null) => void
 	isProfile?: boolean
 	defaultValue: File | null
@@ -81,12 +80,8 @@ export default function Airdrop({
 							)}
 						/>
 						<div className="flex flex-col space-y-1">
-							<p className="text-xs text-gray">
-								{processedFile.name}
-							</p>
-							<p className="text-xs text-gray">
-								File size: {processedFile.size}
-							</p>
+							<p className="text-xs text-gray">{processedFile.name}</p>
+							<p className="text-xs text-gray">File size: {processedFile.size}</p>
 						</div>
 						<Button
 							size="sm"
@@ -102,18 +97,12 @@ export default function Airdrop({
 						<Icon.UploadImage className="mx-auto h-6 w-6 text-gray" />
 						<p className="text-sm font-medium">
 							Drag and drop files, or{" "}
-							<span
-								className="text-primary"
-								role="button"
-								onClick={open}
-							>
+							<span className="text-primary" role="button" onClick={open}>
 								browse
 							</span>
 						</p>
 						<div className="flex flex-col space-y-1">
-							<p className="text-xs text-gray">
-								Support files: png, jpg, jpeg
-							</p>
+							<p className="text-xs text-gray">Support files: png, jpg, jpeg</p>
 							<p className="text-xs text-gray">Max size: 10MB</p>
 						</div>
 						<input {...getInputProps({ ...restProps })} />

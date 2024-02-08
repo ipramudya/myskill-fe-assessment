@@ -19,16 +19,10 @@ type StoredPortfolioData = {
 const storage = createJSONStorage<string>(() => localStorage)
 
 /* initialize shared atom state which contain stringified JSON, stored into local storage */
-const SessionStoragePortfolioAtom = atomWithStorage<string>(
-	"portfolio",
-	"",
-	storage,
-)
+const SessionStoragePortfolioAtom = atomWithStorage<string>("portfolio", "", storage)
 
 export default function useStorePortfolio() {
-	const [stringifiedPortfolio, setStringifiedPortfolio] = useAtom(
-		SessionStoragePortfolioAtom,
-	)
+	const [stringifiedPortfolio, setStringifiedPortfolio] = useAtom(SessionStoragePortfolioAtom)
 
 	/** memoized portfolio values in order to ignore unecesarry rerendering,
 	 *   as long as stringifiedPortfolio value does not change

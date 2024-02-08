@@ -7,16 +7,7 @@ interface Props extends LabelHTMLAttributes<HTMLLabelElement> {
 }
 
 const Label = forwardRef<HTMLLabelElement, Props>(
-	(
-		{
-			className,
-			children,
-			isRequired = true,
-			isError = false,
-			...restProps
-		},
-		ref,
-	) => {
+	({ className, children, isRequired = true, isError = false, ...restProps }, ref) => {
 		return (
 			<label
 				className={cn(
@@ -27,8 +18,7 @@ const Label = forwardRef<HTMLLabelElement, Props>(
 				ref={ref}
 				{...restProps}
 			>
-				{children}{" "}
-				{isRequired && <span className="text-danger">*</span>}
+				{children} {isRequired && <span className="text-danger">*</span>}
 			</label>
 		)
 	},

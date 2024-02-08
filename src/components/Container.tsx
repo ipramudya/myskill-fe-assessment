@@ -5,17 +5,9 @@ interface Props {
 	className?: string
 }
 
-export default function Container({
-	children,
-	className,
-}: PropsWithChildren<Props>) {
+export default function Container({ children, className }: PropsWithChildren<Props>) {
 	return (
-		<main
-			className={cn(
-				"mx-auto min-h-dvh w-full max-w-xl md:max-w-3xl",
-				className,
-			)}
-		>
+		<main className={cn("mx-auto min-h-dvh w-full max-w-xl md:max-w-3xl", className)}>
 			{children}
 		</main>
 	)
